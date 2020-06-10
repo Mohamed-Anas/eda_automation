@@ -8,5 +8,6 @@
 5. Then do analysis by importing the **Explorer** class by
   * from dataanalyser.explorer import Explorer
   * Create a Explorer Object
-  * cl = Explorer(df) -- where df is the pandas dataframe
+  * dataframe = pd.read_csv('filename.csv')
+  * cl = Explorer(dataframe)
   * cl.automate() -- to automate the analysis
