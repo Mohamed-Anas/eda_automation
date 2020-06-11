@@ -32,7 +32,7 @@ class Imputer(object):
         self.set_params(df,**kwargs)
         print('Columns to be imputed')
         print(self.columns)
-        print('Method for imputing numeric variables: median,mean,interpolate')
+        print('Method for imputing numeric variables: median,mean,interpolate,knn')
         print('Method for imputing categoric variables: mode,missing(replace nan by "missing")')
         print('Other options: bfill,ffill')
         
