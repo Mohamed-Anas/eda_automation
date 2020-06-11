@@ -1,11 +1,11 @@
-from dataanalyser.duplicates import Duplicates
-from dataanalyser.encoder import Encoder
-from dataanalyser.imputer import Imputer
-from dataanalyser.nullhandler import HandleNull
-from dataanalyser.outlier import OutlierDetector
-from dataanalyser.plotter import Plotter
-from dataanalyser.preprocess import Preprocess
-from dataanalyser.statanalysis import StatAnalysis
+from .duplicates import Duplicates
+from .encoder import Encoder
+from .imputer import Imputer
+from .nullhandler import HandleNull
+from .outlier import OutlierDetector
+from .plotter import Plotter
+from .preprocess import Preprocess
+from .statanalysis import StatAnalysis
 
 import pandas as pd
 import time
