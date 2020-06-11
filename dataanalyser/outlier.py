@@ -1,4 +1,4 @@
-from dataanalyser.plotter import Plotter
+from .plotter import Plotter
 
 import pandas as pd
 import numpy as np
