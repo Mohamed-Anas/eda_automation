@@ -1,5 +1,5 @@
 import pandas as pd
-from dataanalyser.preprocess import Preprocess
+from .preprocess import Preprocess
 import matplotlib.pyplot as plt
 import seaborn as sns
 from pandas.api.types import is_numeric_dtype,is_object_dtype,is_datetime64_any_dtype
