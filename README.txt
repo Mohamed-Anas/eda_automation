@@ -4,8 +4,11 @@ To install the package 'dataanalyser'
 3. pip install .
 
 To use the package 'dataanalyser'
-	from dataanalyser import Explorer
+	from dataanalyser.eda import Preprocessing,Visual,Outlier,Imputation,Testing
 	import pandas as pd
 	dataframe = pd.read_csv('filename')
-	cl = Explorer(dataframe)
-	cl.automate()
+	Preprocessing(dataframe).automate()
+	Visual(dataframe).automate()
+	Outlier(dataframe).automate()
+	Imputation(dataframe).automate()
+	Testing(dataframe).automate()
