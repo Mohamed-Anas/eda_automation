@@ -1,11 +1,18 @@
 # Datacleaner
 ## For installing follow instructions from README.txt
 ### Steps to Use
-1. Initiate a notebook
-2. Load the data you want to analyze in a pandas dataframe.
-3. Then do analysis by importing the **Explorer** class by
-  * from dataanalyser import Explorer
-  * Create a Explorer Object
-  * dataframe = pd.read_csv('filename.csv')
-  * cl = Explorer(dataframe)
-  * cl.automate() -- to automate the analysis
+To install the package 'dataanalyser'
+1. Enter this folder through terminal
+2. pip install -r requirements.txt
+3. pip install .
+
+To use the package 'dataanalyser'
+
+* from dataanalyser.eda import Preprocessing,Visual,Outlier,Imputation,Testing*
+*	import pandas as pd
+*	dataframe = pd.read_csv('filename')
+*	Preprocessing(dataframe).automate()
+* Visual(dataframe).automate()
+*	Outlier(dataframe).automate()
+*	Imputation(dataframe).automate()
+*	Testing(dataframe).automate()
