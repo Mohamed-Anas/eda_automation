@@ -1,0 +1,48 @@
+List of Modules
+Class - Preprocessing
+
+The modules Iam using for Preprocessing are accessible through Explorer Class in explorer. The code is in explorer.py
+In-class modules -- usage cl = Preprocessing(df) -- cl.module_name()
+describe_data()
+data_info()
+
+Imported Modules
+*To import the Explorer Class use
+*from dataanalyser.explorer import Explorer
+cl = Explorer(dataframe)
+Modules_used-- usage cl.module_name()
+print_shape()
+preprocess() -- you might want to look at this module
+column_types()
+drop_duplicates()
+drop_rows()
+drop_cols()
+
+Class - Visual
+In-class modules usage cl = Visual(df) -- cl.module_name()
+pairplot()
+scatterplot()
+histogram()
+boxplot_category()
+boxplot_numeric()
+corr_numeric()
+
+Class - Outlier
+Imported Modules
+*To import the Explorer Class use
+*from dataanalyser.explorer import Explorer
+cl = Explorer(dataframe)
+Modules_used-- usage cl.module_name()
+cl.outlier_detection()
+
+Class - Imputation
+Imported Modules
+*To import the Explorer Class use
+*from dataanalyser.explorer import Explorer
+cl = Explorer(dataframe)
+Modules_used-- usage cl.module_name()
+cl.impute()
+
+Class - Testing
+In - class modules
+normalitu()
