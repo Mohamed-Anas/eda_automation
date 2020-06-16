@@ -1,7 +1,8 @@
+from .preprocess import Preprocess
+
 import pandas as pd
 import seaborn as sns
 from pandas.api.types import is_numeric_dtype,is_object_dtype,is_datetime64_any_dtype
-from .preprocess import Preprocess
 
 class StatAnalysis(object):
     def __init__(self):
@@ -10,7 +11,7 @@ class StatAnalysis(object):
         try:
             sns.heatmap(df.corr())
         except:
-            print("No numeric variables. Can't calculate Correlation Ceofficients")
+            pass
     def anova(self,df,target,**kwargs):
         import scipy.stats as stats
         #Check whether the target is a categorical type

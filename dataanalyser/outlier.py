@@ -53,10 +53,16 @@ class OutlierDetector(object):
         """Outlier detection using Inter-Quantile Range."""
         
         df = self.data
+        outlier_cols = []
+        iqrange=[]
+        left_outliers=[]
+        right_outliers=[]
+        left_mean=[]
+        right_mean=[]
         for column in self.columns:
             try:
                 #If the column is of 'string' or 'object' type --> then continue
-                if not is_numeric_dtype(df[column]):
+                if not is_numeric_dtype(df[column]) and df[column].nunique()<=10:
                     continue
 
             #Calculating the left and right boundaries beyond which
@@ -73,18 +79,21 @@ class OutlierDetector(object):
                 #Boxplots based on percentage - ii
                 #ordinal or not - uer input 
                 #calculating number of rows having outliers
-                rows = df[(df[column]<=whisk1)|(df[column]>=whisk2)].shape[0]
-                if rows>int(df.shape[0]/3):
-                    continue
-                if rows!=0:
-                    print('Column: ',column,' has outliers in ',rows,' rows')
-                    Plotter().boxplot(df,[column])
-
+                rows_left = df[(df[column]<=whisk1)].shape[0]
+                rows_right = df[(df[column]>=whisk2)].shape[0]
+                if (rows_left+rows_right)!=0:
+                    outlier_cols.append(column)
+                    iqrange.append(str(whisk1)+'---'+str(whisk2))
+                    left_outliers.append(rows_left)
+                    left_mean.append(df[(df[column]<=whisk1)][column].min())
+                    right_mean.append(df[(df[column]>=whisk2)][column].max())
+                    right_outliers.append(rows_right)
             except:
                 #Handle General Errors
                 print(column,' not Processed.')
                 continue
-                
+        temp = pd.DataFrame({'iqr':iqrange,'left-outliers':left_outliers,'left-min':left_mean,'right_outliers':right_outliers,'right-max':right_mean},index=outlier_cols)
+        print(temp)
     def zscore(self,df):
         """Outlier Detection using z-score."""
         

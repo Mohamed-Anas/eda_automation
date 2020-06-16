@@ -30,27 +30,8 @@ class Explorer(object):
             print('******************************')
         return wrapper
     
-    def __init__(self,df,preprocess=True):
-        self.df = df
-        self.print_shape()
-        if preprocess:
-            self.preprocess()
-
-        print('Column Types')
-        print(self.column_types())
-
-        print('\t\t**Basic Information about the dataset**')
-        print(self.df.describe().to_string(col_space = 2,float_format = '%.1f'))
-        print('\n')
-        print(self.df.describe(include=['object','datetime']).to_string(col_space = 2,float_format = '%.1f'))
-        print('\n')
-        print('\t\t**Sample Values from the data')
-        print(self.data().head(5))
-
-        print('\n Drop/Rename Duplicate columns')
-        self.drop_duplicates()
-
-        self.pairplot()
+    def __init__(self,df):
+        self.df=df
 
     @_print_decorator
     def tester(self,a=4,*arg,**kwarg):
@@ -109,7 +90,7 @@ class Explorer(object):
             method
         
         """
-        print('**Dropping Duplicates**')    
+        print('\t\t**Dropping Duplicates**')    
 
         initial_num_rows = self.num_rows()
         initial_num_cols = self.num_cols()
@@ -140,7 +121,7 @@ class Explorer(object):
 
         
         """
-        print('**Dropping rows**')
+        print('\t\t**Dropping rows**')
 
         initial_num_rows = self.num_rows()
 
@@ -165,7 +146,7 @@ class Explorer(object):
 
         
         """
-        print('**Dropping Columns**')
+        print('\t\t**Dropping Columns**')
 
         initial_num_cols = self.num_cols()
         
@@ -197,7 +178,7 @@ class Explorer(object):
                 columns having categoric values. Possible options,
                 'mode','bfill','ffill'
         """
-        print('**Imputing Columns**')
+        print('\t\t**Imputing Columns**')
 
         NullHandler.impute(self.data(),**kwargs)
         
@@ -269,7 +250,7 @@ class Explorer(object):
             columns : a list of str, a list of columns to detect outliers
             methods: 'iqr','zscore','pca','dbscan'
         """
-        print('**Outlier Detection**')
+        print('\t\t**Outlier Detection**')
 
         Out.outlier_detection(self.data(),**kwargs)
         
@@ -330,7 +311,7 @@ class Explorer(object):
         Plott.lmplot(self.data(),kwargs['x'],kwargs['y'])
 
     def correlation(self,Stat = StatAnalysis(),**kwargs):
-        print('**Correlation Ceofficient**')
+        print('\t\t**Correlation Ceofficient**')
         Stat.correlation(self.data())
         
     def anova(self,Stat=StatAnalysis(),target=None,**kwargs):

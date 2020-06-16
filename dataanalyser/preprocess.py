@@ -100,9 +100,9 @@ class Preprocess(object):
         """
         
         try:
-            if is_numeric_dtype(df[column]) and df[column].nunique()>=7:
+            if is_numeric_dtype(df[column]) and df[column].nunique()>=10:
                 return 'numeric'
-            elif is_numeric_dtype(df[column]) and df[column].nunique()<=7:
+            elif is_numeric_dtype(df[column]) and df[column].nunique()<=10:
                 return 'categoric'
             elif is_datetime64_any_dtype(df[column]):
                 return 'datetime'
@@ -116,7 +116,6 @@ class Preprocess(object):
             return
         
     def num_col_types(self,df):
-        self.data = df        
         dtype_dict = {}
         dtype_dict['numeric']=[]
         dtype_dict['categoric']=[]

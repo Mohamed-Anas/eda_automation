@@ -1,6 +1,5 @@
 import pandas as pd
 from pandas.api.types import is_numeric_dtype,is_object_dtype,is_datetime64_any_dtype
-from sklearn.impute import KNNImputer
 from sklearn.linear_model import LinearRegression
 
 class Imputer(object):
@@ -32,7 +31,7 @@ class Imputer(object):
         self.set_params(df,**kwargs)
         print('Columns to be imputed')
         print(self.columns)
-        print('Method for imputing numeric variables: median,mean,interpolate,knn')
+        print('Method for imputing numeric variables: median,mean,interpolate')
         print('Method for imputing categoric variables: mode,missing(replace nan by "missing")')
         print('Other options: bfill,ffill')
         
@@ -71,9 +70,10 @@ class Imputer(object):
             df[column]=df[column].fillna(method='ffill')
         elif self.num_method=='interpolate':
             df[column]=df[column].interpolate()
-        elif self.num_method == 'knn':
-            imputer = KNNImputer()
-            df[column]=df[column] = pd.Series(imputer.fit_transform(df[column].values.reshape(-1,1)).reshape(-1,))
+        #elif self.num_method == 'knn':
+        #    from sklearn.impute import KNNImputer
+        #    imputer = KNNImputer()
+        #    df[column]=df[column] = pd.Series(imputer.fit_transform(df[column].values.reshape(-1,1)).reshape(-1,))
             
         
     def impute_cat(self,df,column):
@@ -90,23 +90,9 @@ class Imputer(object):
 
 #If it is time series, bfill and ffill should be suggested
 #Warning: before imputing ask the user.
-            
-    def random_impute(self,df,**kwargs):
-        self.set_params(df,**kwargs)
-        
-        for column in self.columns:
-            self.random_imputation(df, column)
-        
-    def random_imputation(self,df,column):
-        try:
-            number_missing = df[column].isnull().sum()
-            observed_values  = df.loc[df[column].notnull(),column]
-            df.loc[df[column].isnull(),column] = np.random.choice(observed_values,number_missing,replace = True)
-            print(column,' imputed randomly.')
-        except:
-            print(column,' PROBLEM IN PROCESSING')
-        
+"""        
     def impute_regression(self,df,**kwargs):
+        from sklearn.linear_model import LinearRegression
         params = None
         target = None
         if 'params' in kwargs and 'target' in kwargs:
@@ -126,4 +112,5 @@ class Imputer(object):
                 print(df[params].isna().sum())
             except:
                 print('Invalid Columns Present')
+"""
 #Linear Regression and KNN
