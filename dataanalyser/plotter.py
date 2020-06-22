@@ -6,6 +6,7 @@ from pandas.api.types import is_numeric_dtype,is_object_dtype,is_datetime64_any_
 
 
 class Plotter(object):
+    
     def __init__(self):
         pass
 

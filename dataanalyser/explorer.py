@@ -17,11 +17,6 @@ class Explorer(object):
     def _print_decorator(function):
         @wraps(function)   
         def wrapper(self,*arg,**kwarg):
-#            print('Before Processing...')
-#            self.print_shape()
-#            print()
-#            print('After Processing')
-#            print()
             dic = function(self,*arg,**kwarg)
             for key,value in dic.items():
                 print(key,':',value)
@@ -72,7 +67,9 @@ class Explorer(object):
 
     @_print_decorator
     def preprocess(self,Processor = Preprocess(),**kwargs):
-        
+
+        print('\t\t**Preprocessing**\n')    
+
         Processor.preprocess(self.data(),**kwargs)
         
         return {}
@@ -90,7 +87,7 @@ class Explorer(object):
             method
         
         """
-        print('\t\t**Dropping Duplicates**')    
+        print('\t\t**Dropping Duplicates**\n')    
 
         initial_num_rows = self.num_rows()
         initial_num_cols = self.num_cols()
@@ -121,7 +118,7 @@ class Explorer(object):
 
         
         """
-        print('\t\t**Dropping rows**')
+        print('\t\t**Dropping rows**\n')
 
         initial_num_rows = self.num_rows()
 
@@ -146,7 +143,7 @@ class Explorer(object):
 
         
         """
-        print('\t\t**Dropping Columns**')
+        print('\t\t**Dropping Columns**\n')
 
         initial_num_cols = self.num_cols()
         
@@ -178,7 +175,7 @@ class Explorer(object):
                 columns having categoric values. Possible options,
                 'mode','bfill','ffill'
         """
-        print('\t\t**Imputing Columns**')
+        print('\t\t**Imputing Columns**\n')
 
         NullHandler.impute(self.data(),**kwargs)
         
@@ -229,7 +226,7 @@ class Explorer(object):
             thresh: above which LabelEncoded, below which OneHotEncoded
             
         """
-        print('**Encoding Variables')
+        print('\t\t**Encoding Variables**\n')
 
         initial_num_cols = self.num_cols()
         
@@ -250,7 +247,7 @@ class Explorer(object):
             columns : a list of str, a list of columns to detect outliers
             methods: 'iqr','zscore','pca','dbscan'
         """
-        print('\t\t**Outlier Detection**')
+        print('\t\t**Outlier Detection**\n')
 
         Out.outlier_detection(self.data(),**kwargs)
         
@@ -315,7 +312,7 @@ class Explorer(object):
         Stat.correlation(self.data())
         
     def anova(self,Stat=StatAnalysis(),target=None,**kwargs):
-        print('**Anova Analysis**')
+        print('\t\t**Anova Analysis**\n')
         if target is None:
             print('No target variable found to do anova')
             return
@@ -377,7 +374,8 @@ class Explorer(object):
                 print(dfee)
                 print('IV Score: {:.2f}'.format(iv))
                 print('\n')
-    
+
+
     def pairplot(self,Plott=Plotter()):
         columns_to_plot = self.column_types()['numeric']
         print('Colums Used for pairplot',columns_to_plot)
@@ -422,4 +420,4 @@ the same step again')
             elif ordd==4:
                 print('\n\t\t**Statistical Analysis**\n')
                 self.correlation()
- 
+

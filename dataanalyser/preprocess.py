@@ -16,8 +16,7 @@ class Preprocess(object):
 #Overall Dataset overview
 #5-point Summary
 #null values in categoric variables make it treated as float()
-    def preprocess(self, df,columns = None ,regex = '[^\w\s]'):
-        print('Preprocessing....')
+    def preprocess(self, df,columns = None ,regex = '[^\w\s\.]'):
         
         for column in df.columns.values:
             #First change the type to a int or float
@@ -34,7 +33,7 @@ class Preprocess(object):
             if is_object_dtype(df[column]):
                 for ini in (df[column].index):
                     value = df.loc[ini,column]
-                    if pd.isna(value):
+                    if pd.isna(value) or len(value)>3:
                         continue
                     x = re.search(regex,value)
                     if not x is None:
@@ -76,12 +75,29 @@ class Preprocess(object):
                 
             dic = self.find_max_type(df,column)
             maxi = max(dic,key=dic.get)
-            if maxi == 'int' or maxi== 'float':
-                df[column] = pd.to_numeric(df[column],errors='coerce')
-                print(column,' converted from str to ',maxi)
-            elif maxi == 'datetime':
-                df[column]=pd.to_datetime(df[column],errors = 'coerce')
-                print(column,' converted from str to datetime')
+            #going by the majority is not always a great decision
+            #prefer strings more than ints
+            #replace maxi by something else
+            #get max and second max -- most of the times - better to leave as string - if only 10% string I convert to numeric
+            #what will you do for datetime - same concept - if 10% string convert to datetime - otherwise keep as string
+            
+            #Finding the second maximum
+            second_maxi = 0
+            index = None
+            for key in dic:
+                if key==maxi:
+                    continue
+                if dic[key]>=second_maxi:
+                    index =  key
+                    second_maxi = dic[key]
+
+            if float(second_maxi)/df.shape[0]<=0.2:
+                if maxi == 'int' or maxi== 'float':
+                    df[column] = pd.to_numeric(df[column],errors='coerce')
+                    print(column,' converted from str to ',maxi)
+                elif maxi == 'datetime':
+                    df[column]=pd.to_datetime(df[column],errors = 'coerce')
+                    print(column,' converted from str to datetime')
     
     
     def get_col_type(self,df,column):

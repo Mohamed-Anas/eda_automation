@@ -42,6 +42,7 @@ class OutlierDetector(object):
         if opt=='c':
             self.method = input('Enter method: ')
         
+        print()
         #Calling relevant methods
         if self.method == 'iqr':
             self.iqr(df)
@@ -65,25 +66,17 @@ class OutlierDetector(object):
                 if not is_numeric_dtype(df[column]) and df[column].nunique()<=10:
                     continue
 
-            #Calculating the left and right boundaries beyond which
-            #values are treated as outliers.
                 q1 = df[column].quantile(0.25)
                 q3 = df[column].quantile(0.75)
                 iqr = q3-q1
                 whisk1 = q1-1.5*iqr
                 whisk2 = q3+1.5*iqr
             
-                #show boxplots for outliers or kind 
-                #Category has any effect on predicton of target
-                #ANOVA done for each category - less than 10
-                #Boxplots based on percentage - ii
-                #ordinal or not - uer input 
-                #calculating number of rows having outliers
                 rows_left = df[(df[column]<=whisk1)].shape[0]
                 rows_right = df[(df[column]>=whisk2)].shape[0]
                 if (rows_left+rows_right)!=0:
                     outlier_cols.append(column)
-                    iqrange.append(str(whisk1)+'---'+str(whisk2))
+                    iqrange.append(str(whisk1)+'--'+str(whisk2))
                     left_outliers.append(rows_left)
                     left_mean.append(df[(df[column]<=whisk1)][column].min())
                     right_mean.append(df[(df[column]>=whisk2)][column].max())
@@ -93,11 +86,17 @@ class OutlierDetector(object):
                 print(column,' not Processed.')
                 continue
         temp = pd.DataFrame({'iqr':iqrange,'left-outliers':left_outliers,'left-min':left_mean,'right_outliers':right_outliers,'right-max':right_mean},index=outlier_cols)
-        print(temp)
+        display(temp)
+
     def zscore(self,df):
         """Outlier Detection using z-score."""
         
         df = self.data
+        outlier_cols=[]
+        left_outliers=[]
+        right_outliers=[]
+        left_min = []
+        right_max = []
         for column in self.columns:
             try:
                 #If the column is of 'string' or 'object' type --> then continue
@@ -111,23 +110,25 @@ class OutlierDetector(object):
 
                 mean = df[column].mean()
                 std = df[column].std()
-                #show boxplots for outliers or kind 
-                #Category has any effect on predicton of target
-                #ANOVA done for each category - less than 10
-                #Boxplots based on percentage - ii
-                #ordinal or not - uer input 
-                #calculating number of rows having outliers
-                rows = (df[column]> mean+3*std).sum()
-                rows+= (df[column]<mean-3*std).sum()
-                if rows!=0:
-                    print('Column: ',column,' has outliers in ',rows,' rows')
-                    Plotter().boxplot(df,[column])
+                rows_left = df[df[column]<(mean-3*std)].shape[0]
+                rows_right = df[df[column]>(mean+3*std)].shape[0]
+                if((rows_left+rows_right)!=0):
+                    outlier_cols.append(column)
+                    left_outliers.append(rows_left)
+                    right_outliers.append(rows_right)
+                    left_min.append(df[df[column]<(mean-3*std)][column].min())
+                    right_max.append(df[df[column]>(mean+3*std)][column].max())
+                #if rows!=0:
+                    #print('Column: ',column,' has outliers in ',rows,' rows')
+                    #Plotter().boxplot(df,[column])
 
             except:
                 #Handle General Errors
                 print(column,' not Processed.')
                 continue
-                
+        temp = pd.DataFrame({'left-outliers':left_outliers,'left-min':left_min,'right_outliers':right_outliers,'right-max':right_max},index=outlier_cols)
+        display(temp)
+
 #Cokk's Distance
 
     def outlier_pca(self,df,**kwargs):

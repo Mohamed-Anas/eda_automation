@@ -24,7 +24,8 @@ class HandleNull(object):
         drop_percent = self.drop_percent_row
         while drop=='c':
             print('Rows having more than ',drop_percent*100,'%',' null values are dropped')
-            print('Number of rows to be dropped: ',df.shape[0]-df.dropna(axis=0,how='any',thresh=df.shape[1]-ceil(drop_percent*df.shape[1])).shape[0])
+            num_rows_dropped = df.shape[0]-df.dropna(axis=0,how='any',thresh=df.shape[1]-ceil(drop_percent*df.shape[1])).shape[0]
+            print('Number of rows to be dropped: ',num_rows_dropped)
             drop = input('Drop rows(y or n) c to change percentage: ')
             if drop == 'c':
                 drop_percent = float(input('Enter percentage(0-1): '))
