@@ -33,4 +33,4 @@ class StatAnalysis(object):
             fscores.append(fscore)
             pvalues.append(pvalue)
         result_df = pd.DataFrame({'F-Score': fscores,'p-value':pvalues},index=columns)
-        print(result_df)
+        display(result_df)

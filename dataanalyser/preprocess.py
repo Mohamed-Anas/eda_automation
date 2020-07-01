@@ -2,6 +2,7 @@ import pandas as pd
 from pandas.api.types import is_numeric_dtype,is_object_dtype,is_datetime64_any_dtype
 import re
 from dateutil.parser import parse
+import numpy as np
 
 class Preprocess(object):
     def __init__ (self):
@@ -17,8 +18,12 @@ class Preprocess(object):
 #5-point Summary
 #null values in categoric variables make it treated as float()
     def preprocess(self, df,columns = None ,regex = '[^\w\s\.]'):
-        
-        for column in df.columns.values:
+        final_columns=None
+        if columns is None:
+            final_columns = df.columns.values
+        else:
+            final_columns = columns
+        for column in final_columns:
             #First change the type to a int or float
             #try:
             self.change_type(df,columns = [column])
@@ -37,8 +42,11 @@ class Preprocess(object):
                         continue
                     x = re.search(regex,value)
                     if not x is None:
-                        df.loc[ini,column] = pd.NA
-
+                        df.loc[ini,column] = np.nan
+                try:
+                    df[column] = pd.to_numeric(df[column])
+                except:
+                    continue
     
     def find_max_type(self,df ,column):
         number_int = 0
@@ -90,6 +98,7 @@ class Preprocess(object):
                 if dic[key]>=second_maxi:
                     index =  key
                     second_maxi = dic[key]
+
 
             if float(second_maxi)/df.shape[0]<=0.2:
                 if maxi == 'int' or maxi== 'float':
